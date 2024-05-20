@@ -10,7 +10,15 @@ if (process.env.NODE_ENV !== 'production') {
 }
 import { MainContainer, ChatContainer, MessageList, Message, MessageInput, TypingIndicator } from "@chatscope/chat-ui-kit-react"
 
-const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+let API_KEY;
+
+if (import.meta.env.MODE === 'production') {
+  API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
+} else {
+  import('/env.js').then((module) => {
+    API_KEY = module.default.OPENAI_API_KEY;
+  });
+}
 
 function App() {
   const [typing, setTyping] = useState(false);
